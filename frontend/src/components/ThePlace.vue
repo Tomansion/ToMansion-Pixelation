@@ -28,6 +28,9 @@
     </Transition>
   </div>
 
+  <!-- Username Displayer -->
+  <UsernameDisplayer :username="focusedCellUsername" />
+
   <div id="grid"></div>
 </template>
 
@@ -55,8 +58,9 @@ export default {
       cells: null,
       camera: null,
       selectedColor: "#000000",
-      selectedTool: "",
+      selectedTool: "cursor",
       previouslySelectedPixel: null,
+      focusedCellUsername: null,
     };
   },
   mounted() {
@@ -117,12 +121,17 @@ export default {
       const cells = [];
       let camera;
 
-      const hoverOnPixel = (cell) => {
+      const hoverOnPixel = (cell, x, y) => {
+        // Highlight the cell
         if (
           this.selectedTool === "pencil" ||
           this.selectedTool === "eyedropper"
         )
           cell.setStrokeStyle(4, 0xaaaaaa);
+
+        // Show username
+        const username = place.pixels[x][y].username;
+        this.focusedCellUsername = username;
       };
       const hoverOutPixel = (cell) => {
         if (
@@ -192,7 +201,7 @@ export default {
 
             cell.on("pointerdown", () => selectPixel(x, y));
 
-            cell.on("pointerover", () => hoverOnPixel(cell));
+            cell.on("pointerover", () => hoverOnPixel(cell, x, y));
 
             cell.on("pointerout", () => hoverOutPixel(cell));
 
