@@ -34,7 +34,7 @@ export default {
     },
   },
   mounted() {
-    // this.loadSavedColors();
+    this.loadSavedColors();
     this.addColor(this.color); // Add the initial prop color if not already in the palette
   },
   methods: {

@@ -24,6 +24,9 @@
     <v-btn icon @click="$emit('home')">
       <v-icon>mdi-home</v-icon>
     </v-btn>
+    <v-btn icon @click="github">
+      <v-icon>mdi-github</v-icon>
+    </v-btn>
   </div>
 </template>
 
@@ -36,6 +39,14 @@ export default {
     };
   },
   emits: ["toolChange"],
+  methods: {
+    github() {
+      window.open(
+        "https://github.com/Tomansion/ToMansion-Pixelation",
+        "_blank",
+      );
+    },
+  },
   watch: {
     tool(newTool) {
       this.$emit("toolChange", newTool);

@@ -2,11 +2,12 @@
   <div class="color-picker-container">
     <v-color-picker
       v-model="color"
-      mode="rgba"
+      mode="rgb"
       hide-mode-switch
       flat
       show-swatches
       :swatches="swatches"
+      swatches-max-height="220px"
     ></v-color-picker>
   </div>
 </template>
@@ -18,11 +19,46 @@ export default {
     return {
       color: "#ffffff", // Default color
       swatches: [
-        ["#FF0000", "#AA0000", "#550000"],
-        ["#FFFF00", "#AAAA00", "#555500"],
-        ["#00FF00", "#00AA00", "#005500"],
-        ["#00FFFF", "#00AAAA", "#005555"],
-        ["#0000FF", "#0000AA", "#000055"],
+        [
+          "#6d001a",
+          "#be0039",
+          "#ff4500",
+          "#ffa800",
+          "#ffd635",
+          "#fff8b8",
+          "#00a368",
+          "#00cc78",
+        ],
+        [
+          "#7eed56",
+          "#00756f",
+          "#009eaa",
+          "#00ccc0",
+          "#51e9f4",
+          "#3690ea",
+          "#2450a4",
+          "#493ac1",
+        ],
+        [
+          "#6a5cff",
+          "#94b3ff",
+          "#811e9f",
+          "#b44ac0",
+          "#e4abff",
+          "#ff99aa",
+          "#ff3881",
+          "#de107f",
+        ],
+        [
+          "#6d482f",
+          "#9c6926",
+          "#ffb470",
+          "#000000",
+          "#515252",
+          "#898d90",
+          "#d4d7d9",
+          "#ffffff",
+        ],
       ],
       waitEvent: null,
     };
