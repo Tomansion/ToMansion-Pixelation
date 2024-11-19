@@ -8,14 +8,21 @@
   <div id="tools">
     <ToolPicker @toolChange="(tool) => (selectedTool = tool)" />
 
-    <ColorPicker
-      :colorIn="selectedColor"
-      @colorChange="(col) => (selectedColor = col)"
-    />
-    <ColorPalette
-      :color="selectedColor"
-      @colorSelected="(col) => (selectedColor = col)"
-    />
+    <Transition name="fade">
+      <ColorPicker
+        v-if="selectedTool === 'pencil' || selectedTool === 'eyedropper'"
+        :colorIn="selectedColor"
+        @colorChange="(col) => (selectedColor = col)"
+      />
+    </Transition>
+
+    <Transition name="fade">
+      <ColorPalette
+        v-if="selectedTool === 'pencil' || selectedTool === 'eyedropper'"
+        :color="selectedColor"
+        @colorSelected="(col) => (selectedColor = col)"
+      />
+    </Transition>
   </div>
 
   <div id="grid"></div>
@@ -30,6 +37,8 @@ import ColorPicker from "./ColorPicker.vue";
 import ColorPalette from "./ColorPalette.vue";
 
 const placeUpdateEventName = "newPixelUpdate";
+const gridWidth = 30;
+const gridHeight = 30;
 
 export default {
   name: "ThePlace",
@@ -41,7 +50,7 @@ export default {
       place: null,
       game: null,
       cells: null,
-      selectedColor: "#ffffff",
+      selectedColor: "#000000",
       selectedTool: "",
     };
   },
@@ -51,8 +60,6 @@ export default {
 
     // Listen for websocket updates
     this.$websocket.onMessage(placeUpdateEventName, (newSquare) => {
-      console.log("Received place update", newSquare);
-      console.log(this.game);
       // Update the pixel
       this.updatePixel(newSquare);
     });
@@ -105,29 +112,39 @@ export default {
       const place = this.place;
       const cells = [];
 
-      const drawPixel = (x, y) => {
-        const url = "/api/place";
-        const data = {
-          username: "test",
-          x,
-          y,
-          color: this.selectedColor,
-        };
+      const hoverOnPixel = (cell) => {
+        if (
+          this.selectedTool === "pencil" ||
+          this.selectedTool === "eyedropper"
+        )
+          cell.setStrokeStyle(4, 0xaaaaaa);
+      };
+      const hoverOutPixel = (cell) => {
+        if (
+          this.selectedTool === "pencil" ||
+          this.selectedTool === "eyedropper"
+        )
+          cell.setStrokeStyle(0);
+      };
+      const selectPixel = (x, y) => {
+        if (this.selectedTool === "pencil") {
+          // Draw pixel
+          const url = "/api/place";
+          const data = {
+            username: "test",
+            x,
+            y,
+            color: this.selectedColor,
+          };
 
-        axios
-          .post(url, data)
-          .then((response) => {
-            console.log("Successfully posted pixel");
-          })
-          .catch((error) => {
-            console.log("Error posting pixel");
-            console.log(error);
-          });
+          axios
+            .post(url, data)
+            .then((response) => {})
+            .catch((error) => {});
+        }
       };
       function preload() {}
       function create() {
-        const gridWidth = 100;
-        const gridHeight = 100;
         const cellSize = 30;
 
         for (let x = 0; x < gridWidth; x++) {
@@ -145,19 +162,11 @@ export default {
 
             cell.setInteractive();
 
-            cell.on("pointerover", () => {
-              cell.setStrokeStyle(4, 0xaaaaaa);
-            });
+            cell.on("pointerover", () => hoverOnPixel(cell));
 
-            cell.on("pointerout", () => {
-              cell.setStrokeStyle();
-            });
+            cell.on("pointerout", () => hoverOutPixel(cell));
 
-            // Sent /post request on click on cell
-            cell.on("pointerdown", () => {
-              console.log("Clicked on cell", x, y);
-              drawPixel(x, y);
-            });
+            cell.on("pointerdown", () => selectPixel(x, y));
 
             cells.push(cell);
           }
@@ -222,13 +231,12 @@ export default {
       this.cells = cells;
       // Wait for game created event
       this.game.events.on("ready", () => {
-        console.log("Game created");
         this.loadingPlace = false;
       });
     },
     updatePixel(pixel) {
       const { x, y, color } = pixel;
-      const cellNumber = x * 100 + y;
+      const cellNumber = x * gridWidth + y;
 
       if (this.cells && this.cells[cellNumber]) {
         const cell = this.cells[cellNumber];

@@ -7,8 +7,8 @@ from utils.database_utils import (
 from utils.socket_utils import connection_manager
 
 
-WIDTH = 100
-HEIGHT = 100
+WIDTH = 30
+HEIGHT = 30
 empty_place = {"pixels": []}
 
 for y in range(HEIGHT):
