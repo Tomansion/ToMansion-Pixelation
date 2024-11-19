@@ -35,8 +35,8 @@ async def place_pixel(pixel):
         place = db_set_place(empty_place)
 
     # Replace the pixel
-    place["pixels"][pixel.y][pixel.x]["username"] = pixel.username
-    place["pixels"][pixel.y][pixel.x]["color"] = pixel.color
+    place["pixels"][pixel.x][pixel.y]["username"] = pixel.username
+    place["pixels"][pixel.x][pixel.y]["color"] = pixel.color
 
     # Update the place
     db_update_place(place)
