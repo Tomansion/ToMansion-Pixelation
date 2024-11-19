@@ -51,6 +51,10 @@ html {
   padding: 0;
   font-family: "Roboto", sans-serif;
   background-color: #222222;
+
+  height: 100vh !important;
+  width: 100vw !important;
+  overflow: hidden !important;
 }
 #bar {
   position: absolute;

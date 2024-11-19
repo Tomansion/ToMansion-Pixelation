@@ -181,6 +181,10 @@ export default {
         this.camera.scrollX = startX - x;
         this.camera.scrollY = startY - y;
       };
+      const selectNone = () => {
+        this.previouslySelectedPixel = null;
+        this.focusedCellUsername = null;
+      };
       function preload() {}
       function create() {
         const cellSize = 30;
@@ -218,6 +222,8 @@ export default {
 
         const gridContainer = this.add.container(0, 0, cells);
         gridContainer.setSize(gridWidth * cellSize, gridHeight * cellSize);
+        gridContainer.setInteractive();
+        gridContainer.on("pointerover", () => selectNone());
 
         // Set up camera
         camera = this.cameras.main;
@@ -278,6 +284,12 @@ export default {
         this.camera = camera;
         this.centerCamera();
       });
+
+      // Resize the game when the window resizes
+      window.addEventListener("resize", () => {
+        game.scale.resize(window.innerWidth, window.innerHeight);
+        this.centerCamera();
+      });
     },
     updatePixel(pixel) {
       const { x, y, color, username } = pixel;
@@ -297,9 +309,6 @@ export default {
     },
     centerCamera() {
       // Center the camera
-      console.log("Centering camera");
-      console.log(this.camera);
-
       if (this.camera && this.place) {
         const gridWidth = this.place.pixels.length; // Number of columns
         const gridHeight = this.place.pixels[0].length; // Number of rows
@@ -321,6 +330,16 @@ export default {
     ...mapStores(messagesStore),
     ...mapStores(appStore),
   },
+  watch: {
+    selectedTool(newTool) {
+      this.focusedCellUsername = null;
+      this.previouslySelectedPixel = null;
+    },
+    selectedColor(newColor) {
+      this.focusedCellUsername = null;
+      this.previouslySelectedPixel = null;
+    },
+  },
   beforeUnmount() {
     this.$websocket.offMessage(placeUpdateEventName);
   },
@@ -330,6 +349,9 @@ export default {
 <style lang="css">
 #grid {
   margin: 0 auto;
+  height: 100vh !important;
+  width: 100vw !important;
+  overflow: hidden !important;
 }
 
 #loading {
