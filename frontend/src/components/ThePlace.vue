@@ -141,6 +141,10 @@ export default {
             .post(url, data)
             .then((response) => {})
             .catch((error) => {});
+        } else if (this.selectedTool === "eyedropper") {
+          // Get pixel color
+          const pixel = place.pixels[x][y];
+          this.selectedColor = pixel.color;
         }
       };
       function preload() {}
