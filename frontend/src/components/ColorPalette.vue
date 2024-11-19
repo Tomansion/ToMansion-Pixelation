@@ -1,14 +1,18 @@
 <template>
   <v-container>
-    <div class="palette-container">
+    <transition-group
+      name="color-box-transition"
+      tag="div"
+      class="palette-container"
+    >
       <div
         v-for="savedColor in savedColors"
         :key="savedColor"
-        class="color-box"
+        :class="'color-box ' + (savedColor === color ? 'selected' : '')"
         :style="{ backgroundColor: savedColor }"
         @click="selectColor(savedColor)"
       ></div>
-    </div>
+    </transition-group>
   </v-container>
 </template>
 
@@ -43,6 +47,12 @@ export default {
         this.savedColors.splice(index, 1);
       }
       this.savedColors.unshift(newColor); // Add to the top
+
+      // Limit the number of saved colors to 10
+      if (this.savedColors.length > 10) {
+        this.savedColors.pop(); // Remove the last color
+      }
+
       this.saveToLocalStorage(); // Save updated palette
     },
     selectColor(color) {
@@ -88,7 +98,22 @@ export default {
   transition: transform 0.2s ease;
 }
 
+.color-box.selected {
+  border: 2px solid black;
+}
+
 .color-box:hover {
   transform: scale(1.1);
+}
+
+.color-box-transition-enter-active,
+.color-box-transition-leave-active {
+  transition: all 0.3s;
+}
+
+.color-box-transition-enter,
+.color-box-transition-leave-to {
+  opacity: 0;
+  transform: translateY(-20px);
 }
 </style>
