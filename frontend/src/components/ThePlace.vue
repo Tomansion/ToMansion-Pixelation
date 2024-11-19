@@ -49,12 +49,14 @@ export default {
     return {
       isTrue: true,
       loadingPlace: true,
+      loadingPlacement: false,
 
       place: null,
       cells: null,
       camera: null,
       selectedColor: "#000000",
       selectedTool: "",
+      previouslySelectedPixel: null,
     };
   },
   mounted() {
@@ -130,7 +132,17 @@ export default {
           cell.setStrokeStyle(0);
       };
       const selectPixel = (x, y) => {
-        if (this.selectedTool === "pencil") {
+        // Prevent selecting the same pixel multiple times
+        if (
+          this.previouslySelectedPixel &&
+          this.previouslySelectedPixel.x === x &&
+          this.previouslySelectedPixel.y === y
+        )
+          return;
+
+        this.previouslySelectedPixel = { x, y };
+
+        if (this.selectedTool === "pencil" && !this.loadingPlacement) {
           // Draw pixel
           const url = "/api/place";
           const data = {
@@ -139,16 +151,25 @@ export default {
             y,
             color: this.selectedColor,
           };
-
+          this.loadingPlacement = true;
           axios
             .post(url, data)
             .then((response) => {})
-            .catch((error) => {});
+            .catch((error) => {})
+            .finally(() => {
+              this.loadingPlacement = false;
+            });
         } else if (this.selectedTool === "eyedropper") {
           // Get pixel color
           const pixel = place.pixels[x][y];
           this.selectedColor = pixel.color;
         }
+      };
+      const drag = (startX, startY, x, y) => {
+        if (!this.camera) return;
+        if (this.selectedTool !== "cursor") return;
+        this.camera.scrollX = startX - x;
+        this.camera.scrollY = startY - y;
       };
       function preload() {}
       function create() {
@@ -169,11 +190,17 @@ export default {
 
             cell.setInteractive();
 
+            cell.on("pointerdown", () => selectPixel(x, y));
+
             cell.on("pointerover", () => hoverOnPixel(cell));
 
             cell.on("pointerout", () => hoverOutPixel(cell));
 
-            cell.on("pointerdown", () => selectPixel(x, y));
+            cell.on("pointermove", (pointer) => {
+              if (pointer.isDown) {
+                selectPixel(x, y);
+              }
+            });
 
             cells.push(cell);
           }
@@ -199,8 +226,7 @@ export default {
 
         this.input.on("pointermove", (pointer) => {
           if (isDragging) {
-            camera.scrollX = startDragX - pointer.x;
-            camera.scrollY = startDragY - pointer.y;
+            drag(startDragX, startDragY, pointer.x, pointer.y);
           }
         });
 
@@ -245,14 +271,18 @@ export default {
     },
     updatePixel(pixel) {
       const { x, y, color } = pixel;
-      const cellNumber = x * gridWidth + y;
 
+      // Update the phaser grid
+      const cellNumber = x * gridWidth + y;
       if (this.cells && this.cells[cellNumber]) {
         const cell = this.cells[cellNumber];
         cell.fillColor = Phaser.Display.Color.HexStringToColor(color).color;
       } else {
         console.log(`Cell at (${x}, ${y}) not found`);
       }
+
+      // Update the place data
+      this.place.pixels[x][y].color = color;
     },
     centerCamera() {
       // Center the camera
@@ -265,7 +295,8 @@ export default {
         const cellSize = 30; // Ensure this matches your cell size
 
         const centerX = (gridWidth * cellSize) / 2 - this.camera.width / 2;
-        const centerY = (gridHeight * cellSize) / 2 - this.camera.height / 2 - 30;
+        const centerY =
+          (gridHeight * cellSize) / 2 - this.camera.height / 2 - 30;
 
         this.camera.scrollX = centerX;
         this.camera.scrollY = centerY;
