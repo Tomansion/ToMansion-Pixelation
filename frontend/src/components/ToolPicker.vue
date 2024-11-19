@@ -14,6 +14,13 @@
     >
       <v-icon>mdi-pencil</v-icon>
     </v-btn>
+    <v-btn
+      icon
+      @click="tool = 'eyedropper'"
+      :class="'color-picker-toggle ' + (tool === 'eyedropper' ? 'active' : '')"
+    >
+      <v-icon>mdi-eyedropper</v-icon>
+    </v-btn>
   </div>
 </template>
 
@@ -26,6 +33,11 @@ export default {
     };
   },
   emits: ["toolChange"],
+  watch: {
+    tool(newTool) {
+      this.$emit("toolChange", newTool);
+    },
+  },
 };
 </script>
 
@@ -34,6 +46,7 @@ export default {
   padding: 10px;
   display: flex;
   gap: 10px;
+  width: 300px;
 }
 
 button.color-picker-toggle.active {
