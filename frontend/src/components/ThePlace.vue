@@ -5,14 +5,16 @@
   </div>
 
   <!-- Color picker -->
-  <ColorPicker
-    :colorIn="selectedColor"
-    @colorChange="(col) => (selectedColor = col)"
-  />
-  <ColorPalette
-    :color="selectedColor"
-    @colorSelected="(col) => (selectedColor = col)"
-  />
+  <div id="tools">
+    <ColorPicker
+      :colorIn="selectedColor"
+      @colorChange="(col) => (selectedColor = col)"
+    />
+    <ColorPalette
+      :color="selectedColor"
+      @colorSelected="(col) => (selectedColor = col)"
+    />
+  </div>
 
   <div id="grid"></div>
 </template>
@@ -70,7 +72,7 @@ export default {
             type: "error",
             message: "Error loading place :'(",
           });
-        })
+        });
     },
 
     displayGrid() {
@@ -253,5 +255,14 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+#tools {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  transform: translate(-100%,0%);
+  padding: 10px;
+  gap: 10px;
 }
 </style>

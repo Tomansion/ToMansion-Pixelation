@@ -1,17 +1,16 @@
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <v-app>
     <v-main>
       <!-- App bar -->
       <div id="bar">
-        <v-app-bar :elevation="2">
-          <v-app-bar-title style="cursor: pointer">
-            <v-icon>mdi-square-opacity</v-icon>
-            ToMansion Pixelation - Yet Another r/Place clone
-          </v-app-bar-title>
-        </v-app-bar>
+        <v-icon>mdi-square-opacity</v-icon>
+        <a
+          href="https://github.com/Tomansion/ToMansion-Pixelation"
+          target="_blank"
+          >ToMansion Pixelation - Yet Another r/Place clone</a
+        >
       </div>
 
       <!-- Username Form -->
@@ -29,8 +28,18 @@
 <style>
 #bar {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  background-color: white;
+  padding: 10px 20px 10px 10px;
+  margin: 10px;
+  border-radius: 5px;
+  font-size: 20px;
+  display: flex;
+  gap: 10px;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+#bar a {
+  color: black;
+  text-decoration: none;
 }
 </style>

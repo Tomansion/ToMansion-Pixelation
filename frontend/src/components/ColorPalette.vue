@@ -1,19 +1,17 @@
 <template>
-  <v-container>
-    <transition-group
-      name="color-box-transition"
-      tag="div"
-      class="palette-container"
-    >
-      <div
-        v-for="savedColor in savedColors"
-        :key="savedColor"
-        :class="'color-box ' + (savedColor === color ? 'selected' : '')"
-        :style="{ backgroundColor: savedColor }"
-        @click="selectColor(savedColor)"
-      ></div>
-    </transition-group>
-  </v-container>
+  <transition-group
+    name="color-box-transition"
+    tag="div"
+    class="palette-container"
+  >
+    <div
+      v-for="savedColor in savedColors"
+      :key="savedColor"
+      :class="'color-box ' + (savedColor === color ? 'selected' : '')"
+      :style="{ backgroundColor: savedColor }"
+      @click="selectColor(savedColor)"
+    ></div>
+  </transition-group>
 </template>
 
 <script>
@@ -41,6 +39,10 @@ export default {
   },
   methods: {
     addColor(newColor) {
+      // Limit the number of saved colors to 10
+      if (this.savedColors.length >= 11) {
+        this.savedColors.pop(); // Remove the last color
+      }
       const index = this.savedColors.indexOf(newColor);
       if (index !== -1) {
         // If color exists, move it to the top
@@ -48,10 +50,6 @@ export default {
       }
       this.savedColors.unshift(newColor); // Add to the top
 
-      // Limit the number of saved colors to 10
-      if (this.savedColors.length > 10) {
-        this.savedColors.pop(); // Remove the last color
-      }
 
       this.saveToLocalStorage(); // Save updated palette
     },
@@ -73,20 +71,16 @@ export default {
 
 <style scoped>
 .palette-container {
-  position: absolute;
-  background: white;
-  padding: 10px;
-  border-radius: 5px;
-  top: 70%;
-  right: 0;
-  transform: translateY(-50%);
+  border-radius: 4px;
   width: 300px;
-  z-index: 1000; /* Ensure it stays on top */
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2); /* Optional: shadow */
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  justify-content: flex-start;
+  gap: 7px;
   margin: 10px 0;
+  padding: 10px;
+  background-color: white;
 }
 
 .color-box {
@@ -94,7 +88,7 @@ export default {
   height: 40px;
   border-radius: 5px;
   cursor: pointer;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 1);
   transition: transform 0.2s ease;
 }
 
