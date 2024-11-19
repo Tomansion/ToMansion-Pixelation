@@ -40,8 +40,6 @@ import { mapStores } from "pinia";
 import messagesStore from "@/store/messages";
 import appStore from "@/store/app";
 import Phaser from "phaser";
-import ColorPicker from "./ColorPicker.vue";
-import ColorPalette from "./ColorPalette.vue";
 
 const placeUpdateEventName = "newPixelUpdate";
 const gridWidth = 30;

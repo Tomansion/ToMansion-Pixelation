@@ -40,6 +40,9 @@ import appStore from "@/store/app";
 export default {
   computed: {
     ...mapStores(appStore, ["username"]),
+    isOnMobile() {
+      return window.innerWidth < 600;
+    },
   },
 };
 </script>
@@ -81,7 +84,17 @@ html {
   padding: 5px 10px;
   margin: 10px;
   border-radius: 5px;
-  min-width: 60px;
-  height: 30px;
+}
+
+/* For mobile devices: */
+@media only screen and (max-width: 800px) {
+  #bar {
+    display: none;
+  }
+  #username {
+    top: 20px;
+    font-size: 10px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+  }
 }
 </style>

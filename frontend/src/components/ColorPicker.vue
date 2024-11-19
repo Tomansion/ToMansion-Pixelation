@@ -3,11 +3,13 @@
     <v-color-picker
       v-model="color"
       mode="rgb"
-      hide-mode-switch
-      flat
       show-swatches
       :swatches="swatches"
-      swatches-max-height="220px"
+      :swatches-max-height="isOnMobile ? 200 : 300"
+      :hide-canvas="isOnMobile"
+      :hide-inputs="isOnMobile"
+      :hide-mode-switch="isOnMobile"
+      :hide-sliders="isOnMobile"
     ></v-color-picker>
   </div>
 </template>
@@ -61,6 +63,7 @@ export default {
         ],
       ],
       waitEvent: null,
+      windowWidth: window.innerWidth,
     };
   },
   props: {
@@ -70,11 +73,23 @@ export default {
     },
   },
   emits: ["colorChange"],
+  mounted() {
+    window.addEventListener("resize", this.handleResize);
+  },
   methods: {
     colorOut(newColor) {
       this.$emit("colorChange", newColor);
     },
+    handleResize() {
+      this.windowWidth = window.innerWidth;
+    },
   },
+  computed: {
+    isOnMobile() {
+      return this.windowWidth < 800;
+    },
+  },
+
   watch: {
     color(newColor) {
       // Emit the color change event
@@ -87,6 +102,10 @@ export default {
     colorIn(newColor) {
       if (newColor !== this.color) this.color = newColor;
     },
+  },
+
+  beforeUnmount() {
+    window.removeEventListener("resize", this.handleResize);
   },
 };
 </script>

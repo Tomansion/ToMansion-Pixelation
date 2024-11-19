@@ -4,7 +4,7 @@
     <v-form @submit.prevent>
       <v-card style="padding: 10px">
         <v-card-title
-          >Tell us your Username and start placing pixels</v-card-title
+          >Tell us your Username <br> and start placing pixels</v-card-title
         >
         <v-card-text>
           <v-text-field
