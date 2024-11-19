@@ -6,7 +6,10 @@
 
   <!-- Color picker -->
   <div id="tools">
-    <ToolPicker @toolChange="(tool) => (selectedTool = tool)" />
+    <ToolPicker
+      @toolChange="(tool) => (selectedTool = tool)"
+      @home="centerCamera"
+    />
 
     <Transition name="fade">
       <ColorPicker
@@ -48,8 +51,8 @@ export default {
       loadingPlace: true,
 
       place: null,
-      game: null,
       cells: null,
+      camera: null,
       selectedColor: "#000000",
       selectedTool: "",
     };
@@ -106,11 +109,11 @@ export default {
         },
       };
 
-      this.game = new Phaser.Game(config);
+      const game = new Phaser.Game(config);
 
-      let camera;
       const place = this.place;
       const cells = [];
+      let camera;
 
       const hoverOnPixel = (cell) => {
         if (
@@ -214,28 +217,30 @@ export default {
         // Set up arrow keys for movement
         this.cursors = this.input.keyboard.createCursorKeys();
       }
-
       function update() {
         const speed = 15;
 
         // Apply movement
         if (this.cursors.left.isDown) {
-          camera.scrollX -= speed;
+          this.camera.scrollX -= speed;
         } else if (this.cursors.right.isDown) {
-          camera.scrollX += speed;
+          this.camera.scrollX += speed;
         }
 
         if (this.cursors.up.isDown) {
-          camera.scrollY -= speed;
+          this.camera.scrollY -= speed;
         } else if (this.cursors.down.isDown) {
-          camera.scrollY += speed;
+          this.camera.scrollY += speed;
         }
       }
 
       this.cells = cells;
+
       // Wait for game created event
-      this.game.events.on("ready", () => {
+      game.events.on("ready", () => {
         this.loadingPlace = false;
+        this.camera = camera;
+        this.centerCamera();
       });
     },
     updatePixel(pixel) {
@@ -247,6 +252,26 @@ export default {
         cell.fillColor = Phaser.Display.Color.HexStringToColor(color).color;
       } else {
         console.log(`Cell at (${x}, ${y}) not found`);
+      }
+    },
+    centerCamera() {
+      // Center the camera
+      console.log("Centering camera");
+      console.log(this.camera);
+
+      if (this.camera && this.place) {
+        const gridWidth = this.place.pixels.length; // Number of columns
+        const gridHeight = this.place.pixels[0].length; // Number of rows
+        const cellSize = 30; // Ensure this matches your cell size
+
+        const centerX = (gridWidth * cellSize) / 2 - this.camera.width / 2;
+        const centerY = (gridHeight * cellSize) / 2 - this.camera.height / 2 - 30;
+
+        this.camera.scrollX = centerX;
+        this.camera.scrollY = centerY;
+        this.camera.zoom = 0.9;
+      } else {
+        console.log("Camera or place not found");
       }
     },
   },

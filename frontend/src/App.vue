@@ -26,6 +26,13 @@
 </template>
 
 <style>
+body,
+html {
+  margin: 0;
+  padding: 0;
+  font-family: "Roboto", sans-serif;
+  background-color: #222222;
+}
 #bar {
   position: absolute;
   background-color: white;

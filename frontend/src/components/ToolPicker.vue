@@ -3,23 +3,26 @@
     <v-btn
       icon
       @click="tool = 'cursor'"
-      :class="'color-picker-toggle ' + (tool === 'cursor' ? 'active' : '')"
+      :class="'toolToggle ' + (tool === 'cursor' ? 'active' : '')"
     >
       <v-icon>mdi-cursor-move</v-icon>
     </v-btn>
     <v-btn
       icon
       @click="tool = 'pencil'"
-      :class="'color-picker-toggle ' + (tool === 'pencil' ? 'active' : '')"
+      :class="'toolToggle ' + (tool === 'pencil' ? 'active' : '')"
     >
       <v-icon>mdi-pencil</v-icon>
     </v-btn>
     <v-btn
       icon
       @click="tool = 'eyedropper'"
-      :class="'color-picker-toggle ' + (tool === 'eyedropper' ? 'active' : '')"
+      :class="'toolToggle ' + (tool === 'eyedropper' ? 'active' : '')"
     >
       <v-icon>mdi-eyedropper</v-icon>
+    </v-btn>
+    <v-btn icon @click="$emit('home')">
+      <v-icon>mdi-home</v-icon>
     </v-btn>
   </div>
 </template>
@@ -49,7 +52,7 @@ export default {
   width: 300px;
 }
 
-button.color-picker-toggle.active {
+button.toolToggle.active {
   background-color: #afafaf;
 }
 </style>
