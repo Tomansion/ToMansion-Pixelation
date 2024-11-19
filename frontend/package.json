@@ -1,6 +1,6 @@
 {
   "name": "tomansion_pixelation",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "scripts": {
     "serve": "cross-env NODE_OPTIONS='--no-warnings' vite",
     "build": "vite build",
