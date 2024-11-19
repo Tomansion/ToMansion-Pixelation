@@ -1,7 +1,5 @@
 # ToMansion Pixelation
 
-Yet another r/place clone.
-
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
@@ -13,9 +11,13 @@ Yet another r/place clone.
 
 ---
 
-This project was made from the [Vue3-FastAPI-WebApp-template](https://github.com/Tomansion/Vue3-FastAPI-WebApp-template/)
+Yet another r/place clone.
 
-## Running the application in development mode
+![Screenshot](./ToMansionPixelation.png)
+
+This project was made from the [Vue3-FastAPI-WebApp-template](https://github.com/Tomansion/Vue3-FastAPI-WebApp-template/), with Vue3, Phaser3, FastAPI, and Websockets.
+
+## Development Setup
 
 #### Prerequisites
 
