@@ -30,7 +30,10 @@ export default {
 
 .move-up-enter-active,
 .move-up-leave-active {
-  transition: transform 1s, width 1s, height 1s;
+  transition:
+    transform 1s,
+    width 1s,
+    height 1s;
 }
 
 .move-up-enter,

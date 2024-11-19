@@ -50,7 +50,6 @@ export default {
       }
       this.savedColors.unshift(newColor); // Add to the top
 
-
       this.saveToLocalStorage(); // Save updated palette
     },
     selectColor(color) {

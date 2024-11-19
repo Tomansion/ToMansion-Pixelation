@@ -28,8 +28,8 @@
     </Transition>
   </div>
 
-  <!-- Username Displayer -->
-  <UsernameDisplayer :username="focusedCellUsername" />
+  <!-- Username Display -->
+  <UsernameDisplay :username="focusedCellUsername" />
 
   <div id="grid"></div>
 </template>

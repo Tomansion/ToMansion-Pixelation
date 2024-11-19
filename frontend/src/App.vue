@@ -13,7 +13,7 @@
         >
       </div>
 
-      <!-- Username displayer -->
+      <!-- Username display -->
       <div id="username" v-show="appStore.username">
         {{ appStore.username }}
       </div>
