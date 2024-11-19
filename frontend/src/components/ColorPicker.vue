@@ -18,6 +18,7 @@ export default {
   data() {
     return {
       color: "#ffffff", // Default color
+      waitEvent: null,
     };
   },
   props: {
@@ -26,10 +27,20 @@ export default {
       required: true,
     },
   },
+  emits: ["colorChange"],
+  methods: {
+    colorOut(newColor) {
+      this.$emit("colorChange", newColor);
+    },
+  },
   watch: {
     color(newColor) {
       // Emit the color change event
-      this.$emit("colorChange", newColor);
+      // Wait for the user to stop changing the color
+      clearTimeout(this.waitEvent);
+      this.waitEvent = setTimeout(() => {
+        this.colorOut(newColor);
+      }, 300);
     },
     colorIn(newColor) {
       if (newColor !== this.color) this.color = newColor;
