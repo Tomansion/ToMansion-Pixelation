@@ -6,6 +6,8 @@
 
   <!-- Color picker -->
   <div id="tools">
+    <ToolPicker @toolChange="(tool) => (selectedTool = tool)" />
+
     <ColorPicker
       :colorIn="selectedColor"
       @colorChange="(col) => (selectedColor = col)"
@@ -40,7 +42,7 @@ export default {
       game: null,
       cells: null,
       selectedColor: "#ffffff",
-      errorMessage: "",
+      selectedTool: "",
     };
   },
   mounted() {
@@ -261,7 +263,7 @@ export default {
   position: absolute;
   top: 0;
   left: 100%;
-  transform: translate(-100%,0%);
+  transform: translate(-100%, 0%);
   padding: 10px;
   gap: 10px;
 }

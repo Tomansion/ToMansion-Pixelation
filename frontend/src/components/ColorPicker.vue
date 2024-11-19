@@ -1,21 +1,4 @@
 <template>
-  <div class="actions">
-    <v-btn
-      icon
-      @click="tool = 'cursor'"
-      :class="'color-picker-toggle ' + (tool === 'cursor' ? 'active' : '')"
-    >
-      <v-icon>mdi-cursor-move</v-icon>
-    </v-btn>
-    <v-btn
-      icon
-      @click="tool = 'pencil'"
-      :class="'color-picker-toggle ' + (tool === 'pencil' ? 'active' : '')"
-    >
-      <v-icon>mdi-pencil</v-icon>
-    </v-btn>
-  </div>
-
   <div class="color-picker-container">
     <v-color-picker
       v-model="color"
@@ -32,7 +15,6 @@ export default {
   name: "RightAlignedColorPicker",
   data() {
     return {
-      tool: "cursor",
       color: "#ffffff", // Default color
       waitEvent: null,
     };
@@ -43,7 +25,7 @@ export default {
       required: true,
     },
   },
-  emits: ["colorChange", "toolChange"],
+  emits: ["colorChange"],
   methods: {
     colorOut(newColor) {
       this.$emit("colorChange", newColor);
@@ -66,17 +48,8 @@ export default {
 </script>
 
 <style scoped>
-.actions {
-  padding: 10px;
-  display: flex;
-  gap: 10px;
-}
 .color-picker-container {
   width: 300px;
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2); /* Optional: shadow */
-}
-
-button.color-picker-toggle.active {
-  background-color: #afafaf;
 }
 </style>
