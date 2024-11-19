@@ -43,6 +43,7 @@
 <script>
 import { mapStores } from "pinia";
 import messagesStore from "@/store/messages";
+import appStore from "@/store/app";
 
 export default {
   name: "UsernameForm",
@@ -87,6 +88,9 @@ export default {
       // Save the username in local storage
       localStorage.setItem("username", this.newUsername);
 
+      // Store the username in the app store
+      this.appStore.setUsername(this.newUsername);
+
       // Emit the usernameProvided event
       this.$emit("usernameProvided");
 
@@ -109,6 +113,7 @@ export default {
       return !this.isUsernameProvided;
     },
     ...mapStores(messagesStore),
+    ...mapStores(appStore),
   },
 };
 </script>

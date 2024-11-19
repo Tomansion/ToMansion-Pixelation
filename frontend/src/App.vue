@@ -13,6 +13,11 @@
         >
       </div>
 
+      <!-- Username displayer -->
+      <div id="username" v-show="appStore.username">
+        {{ appStore.username }}
+      </div>
+
       <!-- Username Form -->
       <UsernameForm />
 
@@ -25,7 +30,21 @@
   </v-app>
 </template>
 
-<style>
+<script>
+import UsernameForm from "@/components/UsernameForm.vue";
+import ThePlace from "@/components/ThePlace.vue";
+import AppMessenger from "@/components/AppMessenger.vue";
+import { mapStores } from "pinia";
+import appStore from "@/store/app";
+
+export default {
+  computed: {
+    ...mapStores(appStore, ["username"]),
+  },
+};
+</script>
+
+<style scoped>
 body,
 html {
   margin: 0;
@@ -37,6 +56,7 @@ html {
   position: absolute;
   background-color: white;
   padding: 10px 20px 10px 10px;
+  top: 10px;
   margin: 10px;
   border-radius: 5px;
   font-size: 20px;
@@ -48,5 +68,16 @@ html {
 #bar a {
   color: black;
   text-decoration: none;
+}
+
+#username {
+  position: absolute;
+  top: 53px;
+  background-color: white;
+  padding: 5px 10px;
+  margin: 10px;
+  border-radius: 5px;
+  min-width: 60px;
+  height: 30px;
 }
 </style>

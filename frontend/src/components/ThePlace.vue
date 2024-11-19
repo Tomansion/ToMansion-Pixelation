@@ -38,6 +38,7 @@
 import axios from "axios";
 import { mapStores } from "pinia";
 import messagesStore from "@/store/messages";
+import appStore from "@/store/app";
 import Phaser from "phaser";
 import ColorPicker from "./ColorPicker.vue";
 import ColorPalette from "./ColorPalette.vue";
@@ -155,7 +156,7 @@ export default {
           // Draw pixel
           const url = "/api/place";
           const data = {
-            username: "test",
+            username: this.appStore.username,
             x,
             y,
             color: this.selectedColor,
@@ -279,7 +280,7 @@ export default {
       });
     },
     updatePixel(pixel) {
-      const { x, y, color } = pixel;
+      const { x, y, color, username } = pixel;
 
       // Update the phaser grid
       const cellNumber = x * gridWidth + y;
@@ -292,6 +293,7 @@ export default {
 
       // Update the place data
       this.place.pixels[x][y].color = color;
+      this.place.pixels[x][y].username = username;
     },
     centerCamera() {
       // Center the camera
@@ -317,6 +319,7 @@ export default {
   },
   computed: {
     ...mapStores(messagesStore),
+    ...mapStores(appStore),
   },
   beforeUnmount() {
     this.$websocket.offMessage(placeUpdateEventName);
