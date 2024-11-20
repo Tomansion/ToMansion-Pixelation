@@ -42,8 +42,8 @@ import appStore from "@/store/app";
 import Phaser from "phaser";
 
 const placeUpdateEventName = "newPixelUpdate";
-const gridWidth = 30;
-const gridHeight = 30;
+let gridWidth = null;
+let gridHeight = null;
 
 export default {
   name: "ThePlace",
@@ -80,6 +80,8 @@ export default {
         .get(url)
         .then((response) => {
           this.place = response.data;
+          gridWidth = this.place.pixels.length;
+          gridHeight = this.place.pixels[0].length;
           this.displayGrid();
         })
         .catch((error) => {
@@ -293,7 +295,7 @@ export default {
       const { x, y, color, username } = pixel;
 
       // Update the phaser grid
-      const cellNumber = x * gridWidth + y;
+      const cellNumber = x * gridHeight + y;
       if (this.cells && this.cells[cellNumber]) {
         const cell = this.cells[cellNumber];
         cell.fillColor = Phaser.Display.Color.HexStringToColor(color).color;
@@ -318,7 +320,7 @@ export default {
 
         this.camera.scrollX = centerX;
         this.camera.scrollY = centerY;
-        this.camera.zoom = 0.9;
+        this.camera.zoom = 0.9 - Math.max(gridWidth, gridHeight) * 0.0065;
       } else {
         console.log("Camera or place not found");
       }

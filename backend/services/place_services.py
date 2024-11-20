@@ -5,17 +5,21 @@ from utils.database_utils import (
 )
 
 from utils.socket_utils import connection_manager
+from config.init_config import config
 
 
-WIDTH = 30
-HEIGHT = 30
-empty_place = {"pixels": []}
+def generate_empty_place():
+    WIDTH = config["PLACE"]["PLACE_WIDTH"]
+    HEIGHT = config["PLACE"]["PLACE_HEIGHT"]
+    empty_place = {"pixels": []}
 
-for y in range(HEIGHT):
-    row = []
-    for x in range(WIDTH):
-        row.append({"username": "", "x": x, "y": y, "color": "#FFFFFF"})
-    empty_place["pixels"].append(row)
+    for y in range(WIDTH):
+        row = []
+        for x in range(HEIGHT):
+            row.append({"username": "", "x": x, "y": y, "color": "#FFFFFF"})
+        empty_place["pixels"].append(row)
+
+    return empty_place
 
 
 def get_place():
@@ -23,6 +27,7 @@ def get_place():
     place = db_get_place()
 
     if place is None:
+        empty_place = generate_empty_place()
         return db_set_place(empty_place)
 
     return place
@@ -32,6 +37,7 @@ async def place_pixel(pixel):
     place = db_get_place()
 
     if place is None:
+        empty_place = generate_empty_place()
         place = db_set_place(empty_place)
 
     # Replace the pixel

@@ -10,8 +10,8 @@ router = APIRouter()
 
 class Pixel(BaseModel):
     username: str = Field(...)
-    x: int = Field(..., ge=0, lt=100)
-    y: int = Field(..., ge=0, lt=100)
+    x: int = Field(..., ge=0)
+    y: int = Field(..., ge=0)
     color: str = Field(..., pattern=r"^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$")
 
 

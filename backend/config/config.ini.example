@@ -1,3 +1,5 @@
 # Application configuration file
 
-# Nothing at the moment
+[PLACE]
+PLACE_WIDTH = 10
+PLACE_HEIGHT = 50

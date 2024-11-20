@@ -13,28 +13,18 @@ SUCCESS_COLOR = "green"
 
 # Config descriptions
 config_descriptions = {
-    # "ARANGODB": {
-    #     "HOST": {
-    #         "type": str,
-    #         "env": "APP_ARANGODB_HOST",
-    #     },
-    #     "PORT": {
-    #         "type": int,
-    #         "env": "APP_ARANGODB_PORT",
-    #     },
-    #     "DATABASE": {
-    #         "type": str,
-    #         "env": "APP_ARANGODB_DATABASE",
-    #     },
-    #     "USER": {
-    #         "type": str,
-    #         "env": "APP_ARANGODB_USER",
-    #     },
-    #     "PASSWORD": {
-    #         "type": str,
-    #         "env": "APP_ARANGODB_PASSWORD",
-    #     },
-    # },
+    "PLACE": {
+        "PLACE_WIDTH": {
+            "type": int,
+            "env": "PIXELATION_PLACE_WIDTH",
+            "default": 30,
+        },
+        "PLACE_HEIGHT": {
+            "type": int,
+            "env": "PIXELATION_PLACE_HEIGHT",
+            "default": 30,
+        },
+    },
 }
 
 # Config values
@@ -118,7 +108,7 @@ def set_config_value(section, key, value):
         value = str(value)
 
     # Set the value in the config
-    print(" - Set " + colored(section, DEBUG_COLOR) + " / " + colored(key, DEBUG_COLOR))
+    print(" - Set", colored(section, DEBUG_COLOR), "/", colored(key, DEBUG_COLOR))
     config[section][key] = value
 
 
