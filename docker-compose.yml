@@ -1,21 +1,13 @@
 version: "3.8"
 services:
-  web_app_template:
+  pixelation:
     build:
       context: .
       dockerfile: Dockerfile
     environment:
-      # Notes
-      - APP_NOTES_NUMBER_MAX=10
-      - APP_NOTES_TITLE_LENGTH_MAX=50
-      - APP_NOTES_CONTENT_LENGTH_MAX=500
-
-        # ArangoDB
-      - APP_ARANGODB_HOST=...
-      - APP_ARANGODB_PORT=...
-      - APP_ARANGODB_DATABASE=...
-      - APP_ARANGODB_USER=...
-      - APP_ARANGODB_PASSWORD=...
+      # Place
+      - PIXELATION_PLACE_WIDTH=30
+      - PIXELATION_PLACE_HEIGHT=30
     container_name: web_app_template
     restart: always
     ports:
