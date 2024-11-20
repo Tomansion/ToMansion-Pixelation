@@ -9,7 +9,7 @@
         <a
           href="https://github.com/Tomansion/ToMansion-Pixelation"
           target="_blank"
-          >ToMansion Pixelation - Yet Another r/Place clone</a
+          >ToMansion Pixelation - The best r/Place clone</a
         >
       </div>
 
